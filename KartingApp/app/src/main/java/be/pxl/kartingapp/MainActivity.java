@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        new GetAllKartingsTask().execute();
     }
 
 }
