@@ -17,6 +17,7 @@ import be.pxl.kartingapp.data.KartingDbHelper;
 public class MainActivity extends AppCompatActivity {
 
     private Button bCreateNewSession;
+    private Button bShowLineChart;
     private SQLiteDatabase db;
 
     @Override
@@ -37,6 +38,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, AddNewSessionActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        bShowLineChart = (Button) findViewById(R.id.b_show_line_chart);
+        bShowLineChart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, DrawLineChartActivity.class);
                 startActivity(intent);
             }
         });
