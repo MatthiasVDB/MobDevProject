@@ -92,9 +92,12 @@ public class DrawLineChartActivity extends AppCompatActivity {
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setGranularity(1f); // minimum axis-step (interval) is 1
         xAxis.setValueFormatter(xAxisFormatter);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+
 
         YAxis left = lineChart.getAxisLeft();
         left.setValueFormatter(yAxisFormatter);
+        lineChart.getAxisRight().setEnabled(false);
     }
 
     private float convertToFloat(String lapTime) {
