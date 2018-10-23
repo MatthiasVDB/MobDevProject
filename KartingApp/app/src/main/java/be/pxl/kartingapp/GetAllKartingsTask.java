@@ -13,10 +13,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import be.pxl.kartingapp.data.KartingDbHelper;
 import be.pxl.kartingapp.utilities.NetworkUtilities;
 
 public class GetAllKartingsTask extends AsyncTask<URL, Void, String> {
 
+    KartingDbHelper dbHelper;
+    
     @Override
     protected String doInBackground(URL... urls) {
         String searchResults = null;
@@ -39,11 +42,12 @@ public class GetAllKartingsTask extends AsyncTask<URL, Void, String> {
                 System.out.println(json);
                 JSONArray results = json.getJSONArray("results");
                 List<String> names = new ArrayList<>();
+                List<String> addresses = new ArrayList<>();
                 for(int i=0;i<results.length();i++){
                     JSONObject json_obj = results.getJSONObject(i);
 
-                    //name = json_obj.getString("name");
                     names.add(json_obj.getString("name"));
+                    addresses.add(json_obj.getString("formatted_address"));
 
                 }
 
