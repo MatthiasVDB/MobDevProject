@@ -18,7 +18,7 @@ public class NetworkUtilities {
     final static String paramQuery = "Indoor Karting near Belgium";
 
     final static String PARAM_KEY = "key";
-    final static String key = "AIzaSyA1826-KmQvMtxjEdOg1ucJbciu1ZPWI5s";
+    final static String key = "AIzaSyB1CEN3U1opIu8PhghRi_h6YXUIBOEwcFs";
 
     public static URL buildUrl() {
         Uri builtUri = Uri.parse(BASE_URL).buildUpon()

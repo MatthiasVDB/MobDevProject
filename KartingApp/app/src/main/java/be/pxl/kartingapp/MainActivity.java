@@ -65,6 +65,9 @@ public class MainActivity extends AppCompatActivity {
         adapter = new CircuitListAdapter(this, circuitCursors.getAllCircuits());
         kartingRecyclerView.setAdapter(adapter);
 
+        //api call
+        new GetAllKartingsTask().execute();
+
 
     }
 
