@@ -17,16 +17,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bCreateNewSession = (Button) findViewById(R.id.b_create_new_session);
-        bCreateNewSession.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, AddNewSessionActivity.class);
-                startActivity(intent);
-            }
-        });
 
-        new GetAllKartingsTask().execute();
     }
 
 }
