@@ -2,6 +2,7 @@ package be.pxl.kartingapp.data;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -58,6 +59,10 @@ public class KartingDbHelper extends SQLiteOpenHelper {
     public long insertCircuit(String name, String address) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+
+        if (checkIsDataAlreadyInDBorNot(KartingContract.CircuitEntry.TABLE_NAME, KartingContract.CircuitEntry.NAME, name)) {
+            return 0;
+        }
         values.put(KartingContract.CircuitEntry.NAME, name);
         values.put(KartingContract.CircuitEntry.ADDRESS, address);
         return db.insert(KartingContract.CircuitEntry.TABLE_NAME, null, values);
@@ -81,5 +86,17 @@ public class KartingDbHelper extends SQLiteOpenHelper {
         values.put(KartingContract.LapEntry.LAP_TIME, time);
         values.put(KartingContract.LapEntry.SESSION_ID, sessionId);
         return db.insert(KartingContract.LapEntry.TABLE_NAME, null, values);
+    }
+
+    public boolean checkIsDataAlreadyInDBorNot(String TableName, String dbfield, String fieldValue) {
+        String Query = "Select * from " + TableName + " where " + dbfield + " = \"" + fieldValue + "\"";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(Query, null);
+        if(cursor.getCount() <= 0){
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
     }
 }

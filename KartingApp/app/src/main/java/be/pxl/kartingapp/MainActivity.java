@@ -24,6 +24,10 @@ public class MainActivity extends AppCompatActivity implements CallbackInterface
     private SQLiteDatabase db;
     private List<String> kartingNames;
     private List<String> kartingAddresses;
+    private KartingDbHelper dbHelper;
+    private CircuitListAdapter adapter;
+    private CircuitCursors circuitCursors;
+    private RecyclerView kartingRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,14 +35,10 @@ public class MainActivity extends AppCompatActivity implements CallbackInterface
         setContentView(R.layout.activity_main);
 
 
-
-        RecyclerView kartingRecyclerView;
-        CircuitListAdapter adapter;
-
-        KartingDbHelper dbHelper = new KartingDbHelper(this);
+        dbHelper = new KartingDbHelper(this);
         db = dbHelper.getWritableDatabase();
 
-        CircuitCursors circuitCursors = new CircuitCursors(db);
+        circuitCursors = new CircuitCursors(db);
 
         bCreateNewSession = (Button) findViewById(R.id.b_create_new_session);
         bCreateNewSession.setOnClickListener(new View.OnClickListener() {
@@ -61,12 +61,6 @@ public class MainActivity extends AppCompatActivity implements CallbackInterface
         kartingRecyclerView = this.findViewById(R.id.rv_circuits);
         kartingRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
-        //Uncomment when you want to add dummy data
-        //dbHelper.insertCircuit("dummyKarting", "dummyAddress");
-        //dbHelper.insertSession("FULL", new Date(0), 1);
-        //dbHelper.insertLap("0:43.123", 1);
-
         adapter = new CircuitListAdapter(this, circuitCursors.getAllCircuits());
         kartingRecyclerView.setAdapter(adapter);
 
@@ -82,5 +76,12 @@ public class MainActivity extends AppCompatActivity implements CallbackInterface
     public void processFinished(List<String> names, List<String> addresses) {
         kartingNames = names;
         kartingAddresses = addresses;
+
+        for (int i = 0; i < names.size(); i++) {
+            dbHelper.insertCircuit(names.get(i), addresses.get(i));
+        }
+
+        adapter = new CircuitListAdapter(this, circuitCursors.getAllCircuits());
+        kartingRecyclerView.setAdapter(adapter);
     }
 }
