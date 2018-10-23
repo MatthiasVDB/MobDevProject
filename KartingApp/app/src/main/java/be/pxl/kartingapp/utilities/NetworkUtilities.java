@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class NetworkUtilities {
     final static String BASE_URL =
-            //"https://maps.googleapis.com/maps/api/place/textsearch/json?query=Indoor+Karting+near+Belgium&key=AIzaSyA1826-KmQvMtxjEdOg1ucJbciu1ZPWI5s";
+            //"https://maps.googleapis.com/maps/api/place/textsearch/json?query=Indoor+Karting+near+Belgium&key=AIzaSyB1CEN3U1opIu8PhghRi_h6YXUIBOEwcFs";
             "https://maps.googleapis.com/maps/api/place/textsearch/json";
 
     final static String PARAM_QUERY = "query";
