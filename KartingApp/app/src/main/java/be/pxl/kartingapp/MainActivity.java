@@ -9,16 +9,21 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 
+import org.json.JSONObject;
+
 import java.sql.Date;
+import java.util.List;
 
 import be.pxl.kartingapp.data.CircuitCursors;
 import be.pxl.kartingapp.data.KartingDbHelper;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CallbackInterface {
 
     private Button bCreateNewSession;
     private Button bShowLineChart;
     private SQLiteDatabase db;
+    private List<String> kartingNames;
+    private List<String> kartingAddresses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,11 +71,16 @@ public class MainActivity extends AppCompatActivity {
         kartingRecyclerView.setAdapter(adapter);
 
         //api call
-        new GetAllKartingsTask().execute();
-
-
+        GetAllKartingsTask getAllKartingsTask = new GetAllKartingsTask();
+        getAllKartingsTask.delegate = this;
+        getAllKartingsTask.execute();
+       
     }
 
 
-
+    @Override
+    public void processFinished(List<String> names, List<String> addresses) {
+        kartingNames = names;
+        kartingAddresses = addresses;
+    }
 }

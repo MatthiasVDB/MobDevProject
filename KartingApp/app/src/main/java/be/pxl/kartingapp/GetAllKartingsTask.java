@@ -18,8 +18,8 @@ import be.pxl.kartingapp.utilities.NetworkUtilities;
 
 public class GetAllKartingsTask extends AsyncTask<URL, Void, String> {
 
-    KartingDbHelper dbHelper;
-    
+    public CallbackInterface delegate;
+
     @Override
     protected String doInBackground(URL... urls) {
         String searchResults = null;
@@ -35,6 +35,7 @@ public class GetAllKartingsTask extends AsyncTask<URL, Void, String> {
 
     @Override
     protected void onPostExecute(String jsonString) {
+
         if(jsonString != null && !jsonString.equals("")){
 
             try {
@@ -54,6 +55,7 @@ public class GetAllKartingsTask extends AsyncTask<URL, Void, String> {
                 //mSearchResults.setText(results.getString("name"));
 
                 System.out.println(results);
+                delegate.processFinished(names, addresses);
 
             } catch (JSONException e) {
                 e.printStackTrace();
