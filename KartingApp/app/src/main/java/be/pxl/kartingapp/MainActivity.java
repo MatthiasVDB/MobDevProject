@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         RecyclerView kartingRecyclerView;
         CircuitListAdapter adapter;
 
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new CircuitListAdapter(this, circuitCursors.getAllCircuits());
         kartingRecyclerView.setAdapter(adapter);
+
 
     }
 
