@@ -80,7 +80,7 @@ public class KartingDbHelper extends SQLiteOpenHelper {
         return db.insert(KartingContract.SessionEntry.TABLE_NAME, null, values);
     }
 
-    public long insertLap(String time, int sessionId) {
+    public long insertLap(String time, long sessionId) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KartingContract.LapEntry.LAP_TIME, time);
