@@ -2,6 +2,7 @@ package be.pxl.kartingapp;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,7 +18,7 @@ import java.util.List;
 import be.pxl.kartingapp.data.CircuitCursors;
 import be.pxl.kartingapp.data.KartingDbHelper;
 
-public class MainActivity extends AppCompatActivity implements CallbackInterface {
+public class MainActivity extends FragmentActivity implements CallbackInterface {
 
     private Button bCreateNewSession;
     private Button bShowLineChart;
