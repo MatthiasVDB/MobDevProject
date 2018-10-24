@@ -46,12 +46,16 @@ public class AddNewSessionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 List<String> lapTimes = new ArrayList<>();
 
-                for( int i = 0; i < layout.getChildCount(); i++ )
+                for( int i = 0; i < layout.getChildCount(); i++ ){
                     if( layout.getChildAt(i) instanceof EditText && layout.getChildAt(i).getId() != R.id.tv_chosen_date ){
-                        //doSomething
                         String laptime = ((EditText) layout.getChildAt(i)).getText().toString();
-                        System.out.println(laptime);
+                        lapTimes.add(laptime);
+
                     }
+                }
+
+                addSessionWithLaptimes("Full", tv_chosenDate.getText().toString(), 1, lapTimes);
+
 
             }
         });
@@ -72,8 +76,7 @@ public class AddNewSessionActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if(charSequence.length() != 0){
-                   //todo generate edittexts
-                    //todo input check for numbers
+                   //todo input check for numbers
                     int numberOflines = Integer.parseInt(charSequence.toString());
                     addLines(numberOflines);
                 } else if(layout.getChildCount() != 0) {
@@ -111,13 +114,20 @@ public class AddNewSessionActivity extends AppCompatActivity {
                 .append(month).append("/").append(year));
     }
 
-    private void addSessionWithLaptimes(String layout, Date date, int circuitId, List<String>lapTimes){
+    private void addSessionWithLaptimes(String layout, String date, int circuitId, List<String>lapTimes){
+       long testEnterLapTimesID = 0;
         dbHelper = new KartingDbHelper(this);
         long createdSessionId = dbHelper.insertSession(layout, date, circuitId);
 
         for (int i = 0; i < lapTimes.size(); i++){
             dbHelper.insertLap(lapTimes.get(i), createdSessionId);
+            System.out.println(testEnterLapTimesID);
         }
 
+        System.out.println(dbHelper.getAllLaptimesBySessionId(3));
+
+
     }
+
+
 }

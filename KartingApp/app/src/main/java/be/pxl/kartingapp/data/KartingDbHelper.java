@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 public class KartingDbHelper extends SQLiteOpenHelper {
 
@@ -36,7 +37,7 @@ public class KartingDbHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_SESSION_TABLE = "CREATE TABLE " + KartingContract.SessionEntry.TABLE_NAME + " (" +
                 KartingContract.SessionEntry._ID + " INTEGER PRiMARY KEY AUTOINCREMENT, " +
                 KartingContract.SessionEntry.TRACK_LAYOUT + " TEXT NOT NULL, " +
-                KartingContract.SessionEntry.SESSION_DATE + " DATE NOT NULL, " +
+                KartingContract.SessionEntry.SESSION_DATE + " TEXT NOT NULL, " +
                 KartingContract.SessionEntry.CIRCUIT_ID + " INTEGER NOT NULL, FOREIGN KEY (" + KartingContract.SessionEntry.CIRCUIT_ID + ") REFERENCES " + KartingContract.CircuitEntry.TABLE_NAME + "(_ID)); ";
         final String SQL_CREATE_LAP_TABLE = "CREATE TABLE " + KartingContract.LapEntry.TABLE_NAME + " (" +
                 KartingContract.LapEntry._ID + " INTEGER PRiMARY KEY AUTOINCREMENT, " +
@@ -68,14 +69,14 @@ public class KartingDbHelper extends SQLiteOpenHelper {
         return db.insert(KartingContract.CircuitEntry.TABLE_NAME, null, values);
     }
 
-    public long insertSession(String layout, Date date, int circuitId) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        String formattedDate = sdf.format(date);
+    public long insertSession(String layout, String date, int circuitId) {
+        //SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        //String formattedDate = sdf.format(date);
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KartingContract.SessionEntry.TRACK_LAYOUT, layout);
-        values.put(KartingContract.SessionEntry.SESSION_DATE, formattedDate);
+        values.put(KartingContract.SessionEntry.SESSION_DATE, date);
         values.put(KartingContract.SessionEntry.CIRCUIT_ID, circuitId);
         return db.insert(KartingContract.SessionEntry.TABLE_NAME, null, values);
     }
@@ -98,5 +99,28 @@ public class KartingDbHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         return true;
+    }
+
+    public ArrayList<String> getAllLaptimesBySessionId(long id){
+        ArrayList<String> allLaptimes = new ArrayList<>();
+        String Query = "Select * from  lap where session_id = " + id;
+        //String Query = "Select * from  lap";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(Query, null);
+        if(cursor != null){
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    String session = cursor.getString(cursor.getColumnIndex("session_id"));
+                    System.out.println(session);
+                    String lap = cursor.getString(cursor.getColumnIndex("lapTime"));
+
+                    allLaptimes.add(lap);
+                    cursor.moveToNext();
+                }
+            }
+        }
+        cursor.close();
+        return allLaptimes;
+
     }
 }
