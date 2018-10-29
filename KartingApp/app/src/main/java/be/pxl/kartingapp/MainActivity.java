@@ -18,28 +18,17 @@ import java.util.List;
 import be.pxl.kartingapp.data.CircuitCursors;
 import be.pxl.kartingapp.data.KartingDbHelper;
 
-public class MainActivity extends FragmentActivity implements CallbackInterface {
+public class MainActivity extends FragmentActivity {
 
     private Button bCreateNewSession;
     private Button bShowLineChart;
-    private SQLiteDatabase db;
-    private List<String> kartingNames;
-    private List<String> kartingAddresses;
-    private KartingDbHelper dbHelper;
-    private CircuitListAdapter adapter;
-    private CircuitCursors circuitCursors;
-    private RecyclerView kartingRecyclerView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        dbHelper = new KartingDbHelper(this);
-        db = dbHelper.getWritableDatabase();
-
-        circuitCursors = new CircuitCursors(db);
 
         bCreateNewSession = (Button) findViewById(R.id.b_create_new_session);
         bCreateNewSession.setOnClickListener(new View.OnClickListener() {
@@ -59,30 +48,9 @@ public class MainActivity extends FragmentActivity implements CallbackInterface 
             }
         });
 
-        kartingRecyclerView = this.findViewById(R.id.rv_circuits);
-        kartingRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        adapter = new CircuitListAdapter(this, circuitCursors.getAllCircuits());
-        kartingRecyclerView.setAdapter(adapter);
-
-        //api call
-        GetAllKartingsTask getAllKartingsTask = new GetAllKartingsTask();
-        getAllKartingsTask.delegate = this;
-        getAllKartingsTask.execute();
        
     }
 
 
-    @Override
-    public void processFinished(List<String> names, List<String> addresses) {
-        kartingNames = names;
-        kartingAddresses = addresses;
 
-        for (int i = 0; i < names.size(); i++) {
-            dbHelper.insertCircuit(names.get(i), addresses.get(i));
-        }
-
-        adapter = new CircuitListAdapter(this, circuitCursors.getAllCircuits());
-        kartingRecyclerView.setAdapter(adapter);
-    }
 }

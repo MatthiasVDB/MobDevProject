@@ -19,9 +19,16 @@
         android:layout_height="wrap_content"
         android:text="Show line chart"/>
 
+    <fragment android:name="be.pxl.kartingapp.CircuitListFragment"
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <!--
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_circuits"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+        -->
 
 </LinearLayout>
