@@ -14,7 +14,7 @@ public class Converters {
      }
 
      public static String convertMillisecondsToLaptimeString(float milliseconds){
-         return String.format("%02d min %02d sec",
+         return String.format("00:%02d:%02d",
                  TimeUnit.MILLISECONDS.toMinutes((long)milliseconds),
                  TimeUnit.MILLISECONDS.toSeconds((long)milliseconds) -
                          TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)milliseconds))
