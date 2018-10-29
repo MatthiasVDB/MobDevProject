@@ -20,16 +20,18 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import be.pxl.kartingapp.utilities.Converters;
+
 public class DrawLineChartActivity extends AppCompatActivity {
 
     private LineChart lineChart;
-    private ArrayList<Date> dates = new ArrayList<>();
+    private ArrayList<String> dates = new ArrayList<>();
     private ArrayList<String> timeStamps = new ArrayList<>();
 
     private Laptime[] laptimes = new Laptime[]{
-            new Laptime("00:12:05", new Date(2005,5,2) ),
-            new Laptime("00:10:00", new Date(2005,5,5) ),
-            new Laptime("00:11:00", new Date(2005,6,5) )
+            new Laptime("00:12:05", "05/02/2005" ),
+            new Laptime("00:10:00", "07/02/2005" ),
+            new Laptime("00:11:00", "08/05/2005" )
     };
 
     @Override
@@ -46,7 +48,7 @@ public class DrawLineChartActivity extends AppCompatActivity {
             dates.add(laptimes[i].getDate());
             timeStamps.add(laptimes[i].getLapTime());
 
-            Entry entry = new Entry((float)i, convertToFloat(laptimes[i].getLapTime()));
+            Entry entry = new Entry((float)i, Converters.convertLaptimeStringToMilliseconds(laptimes[i].getLapTime()));
 
             lapTimes.add(entry);
         }
@@ -68,13 +70,12 @@ public class DrawLineChartActivity extends AppCompatActivity {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
                 String[] datesAsString = new String[dates.size()];
-                DateFormat df = new SimpleDateFormat("dd/MM/yyyy ");
-
 
                 for (int i =0; i < dates.size(); i++){
-                    datesAsString[i] = df.format(dates.get(i));
+                    datesAsString[i] = dates.get(i);
                 }
                 return datesAsString[(int) value];
+
             }
 
         };
@@ -82,10 +83,7 @@ public class DrawLineChartActivity extends AppCompatActivity {
         IAxisValueFormatter yAxisFormatter = new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                //String[] timeStampsAsString = new String[timeStamps.size()];
-                //convert value back to lapTime
-
-                return convertToTimeStamp(value);
+                return Converters.convertMillisecondsToLaptimeString(value);
             }
         };
 
@@ -100,32 +98,11 @@ public class DrawLineChartActivity extends AppCompatActivity {
         lineChart.getAxisRight().setEnabled(false);
     }
 
-    private float convertToFloat(String lapTime) {
-        //String timeString = "01:00:100";
-        //hh:mm:ss
-        int multiplier[] = {3600000, 60000, 100};
-        String splits[] = lapTime.split(":");
-        float time = 0;
-        for (int x = 0; x < splits.length; x++) {
-            time += (Integer.parseInt(splits[x]) * multiplier[x]);
-        }
-        System.out.println(time);
-        return time;
-    }
-
-    private String convertToTimeStamp(float milliseconds){
-        return String.format("%02d min %02d sec",
-                TimeUnit.MILLISECONDS.toMinutes((long)milliseconds),
-                TimeUnit.MILLISECONDS.toSeconds((long)milliseconds) -
-                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)milliseconds))
-        );
-    }
-
     private class Laptime{
         private String lapTime;
-        private Date date;
+        private String date;
 
-        public Laptime(String laptime, Date date){
+        public Laptime(String laptime, String date){
             this.lapTime = laptime;
             this.date = date;
         }
@@ -135,7 +112,7 @@ public class DrawLineChartActivity extends AppCompatActivity {
             return lapTime;
         }
 
-        public Date getDate() {
+        public String getDate() {
             return date;
         }
     }
