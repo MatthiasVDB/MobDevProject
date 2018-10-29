@@ -22,4 +22,21 @@ public class CircuitCursors {
                 null
         );
     }
+
+    public long getCircuitIdByName(String name){
+        long circuitId = -1;
+        String Query = "Select * from circuit where name = \"" + name +"\"";
+        Cursor cursor = db.rawQuery(Query, null);
+        if(cursor != null) {
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    circuitId = cursor.getLong(cursor.getColumnIndex("_id"));
+                    cursor.moveToNext();
+                }
+            }
+        }
+
+        cursor.close();
+        return circuitId;
+    }
 }
