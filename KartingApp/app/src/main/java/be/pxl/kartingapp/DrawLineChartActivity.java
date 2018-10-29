@@ -19,8 +19,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 import be.pxl.kartingapp.data.KartingDbHelper;
+import be.pxl.kartingapp.models.Lap;
+import be.pxl.kartingapp.models.Session;
 import be.pxl.kartingapp.utilities.Converters;
 
 public class DrawLineChartActivity extends AppCompatActivity {
@@ -28,12 +31,12 @@ public class DrawLineChartActivity extends AppCompatActivity {
     private LineChart lineChart;
     private ArrayList<String> dates = new ArrayList<>();
     private ArrayList<String> timeStamps = new ArrayList<>();
-
-    private Laptime[] laptimes = new Laptime[]{
+    private ArrayList<Lap> laptimes;
+    /*private Laptime[] laptimes = new Laptime[]{
             new Laptime("00:12:05", "05/02/2005" ),
             new Laptime("00:10:00", "07/02/2005" ),
             new Laptime("00:11:00", "08/05/2005" )
-    };
+    };*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,15 +44,15 @@ public class DrawLineChartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_drawlinechart);
 
         lineChart = findViewById(R.id.lc_linechart);
-
+        laptimes = getFastestLapsByTrackLayout("Full");
         List<Entry> lapTimes = new ArrayList<Entry>();
 
-        for (int i = 0; i < laptimes.length; i++){
+        for (int i = 0; i < laptimes.size(); i++){
 
-            dates.add(laptimes[i].getDate());
-            timeStamps.add(laptimes[i].getLapTime());
+            dates.add(laptimes.get(i).getDate());
+            timeStamps.add(laptimes.get(i).getLapTime());
 
-            Entry entry = new Entry((float)i, Converters.convertLaptimeStringToMilliseconds(laptimes[i].getLapTime()));
+            Entry entry = new Entry((float)i, Converters.convertLaptimeStringToMilliseconds(laptimes.get(i).getLapTime()));
 
             lapTimes.add(entry);
         }
@@ -64,8 +67,6 @@ public class DrawLineChartActivity extends AppCompatActivity {
         lineChart.setData(data);
         lineChart.invalidate(); // refresh
 
-        KartingDbHelper dbHelper = new KartingDbHelper(this);
-        dbHelper.getAllCircuitsessionsByTrackLayout("Full");
 
         // the labels that should be drawn on the XAxis
         IAxisValueFormatter xAxisFormatter = new IAxisValueFormatter() {
@@ -87,6 +88,7 @@ public class DrawLineChartActivity extends AppCompatActivity {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
                 return Converters.convertMillisecondsToLaptimeString(value);
+
             }
         };
 
@@ -99,9 +101,35 @@ public class DrawLineChartActivity extends AppCompatActivity {
         YAxis left = lineChart.getAxisLeft();
         left.setValueFormatter(yAxisFormatter);
         lineChart.getAxisRight().setEnabled(false);
+
+
     }
 
-    private class Laptime{
+    public ArrayList<Lap> getFastestLapsByTrackLayout(String trackLayout){
+        KartingDbHelper dbHelper = new KartingDbHelper(this);
+        ArrayList<Session> sessions = dbHelper.getAllCircuitsessionsByTrackLayout(trackLayout);
+        ArrayList<Lap> laps = new ArrayList<>();
+
+        for (Session session: sessions) {
+            ArrayList<String> lapTimes = dbHelper.getAllLaptimesBySessionId(session.getId());
+            float fastestTime = 900000f;
+            for (String laptime: lapTimes ) {
+                float time = Converters.convertLaptimeStringToMilliseconds(laptime);
+                if(time < fastestTime){
+                    fastestTime = time;
+                }
+            }
+
+            String time = Converters.convertMillisecondsToLaptimeString(fastestTime);
+            Lap lap = new Lap(time, session.getDate());
+            laps.add(lap);
+
+        }
+
+        return laps;
+    }
+
+    /*private class Laptime{
         private String lapTime;
         private String date;
 
@@ -118,7 +146,7 @@ public class DrawLineChartActivity extends AppCompatActivity {
         public String getDate() {
             return date;
         }
-    }
+    }*/
 
 }
 

@@ -10,6 +10,9 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import be.pxl.kartingapp.models.Lap;
+import be.pxl.kartingapp.models.Session;
+
 public class KartingDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "karting.db";
@@ -124,8 +127,11 @@ public class KartingDbHelper extends SQLiteOpenHelper {
 
     }
 
-    public ArrayList<Integer> getAllCircuitsessionsByTrackLayout(String trackLayout){
-        ArrayList<Integer> allCircuitSessions = new ArrayList<>();
+
+
+    public ArrayList<Session> getAllCircuitsessionsByTrackLayout(String trackLayout){
+        ArrayList<Session> allCircuitSessions = new ArrayList<>();
+        Session session;
         String Query = "Select * from  circuitSession where trackLayout = \"" + trackLayout + "\"";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(Query, null);
@@ -133,7 +139,9 @@ public class KartingDbHelper extends SQLiteOpenHelper {
             if (cursor.moveToFirst()){
                 while (!cursor.isAfterLast()){
                     int id = cursor.getInt(cursor.getColumnIndex("_id"));
-                    allCircuitSessions.add(id);
+                    String date = cursor.getString(cursor.getColumnIndex("sessionDate"));
+                    session = new Session(id, date);
+                    allCircuitSessions.add(session);
                     cursor.moveToNext();
                 }
             }
