@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import be.pxl.kartingapp.data.KartingDbHelper;
 import be.pxl.kartingapp.utilities.Converters;
 
 public class DrawLineChartActivity extends AppCompatActivity {
@@ -63,6 +64,8 @@ public class DrawLineChartActivity extends AppCompatActivity {
         lineChart.setData(data);
         lineChart.invalidate(); // refresh
 
+        KartingDbHelper dbHelper = new KartingDbHelper(this);
+        dbHelper.getAllCircuitsessionsByTrackLayout("Full");
 
         // the labels that should be drawn on the XAxis
         IAxisValueFormatter xAxisFormatter = new IAxisValueFormatter() {
