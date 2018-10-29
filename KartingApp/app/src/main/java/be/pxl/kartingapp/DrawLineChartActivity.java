@@ -13,13 +13,8 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Stream;
 
 import be.pxl.kartingapp.data.KartingDbHelper;
 import be.pxl.kartingapp.models.Lap;
@@ -32,11 +27,6 @@ public class DrawLineChartActivity extends AppCompatActivity {
     private ArrayList<String> dates = new ArrayList<>();
     private ArrayList<String> timeStamps = new ArrayList<>();
     private ArrayList<Lap> laptimes;
-    /*private Laptime[] laptimes = new Laptime[]{
-            new Laptime("00:12:05", "05/02/2005" ),
-            new Laptime("00:10:00", "07/02/2005" ),
-            new Laptime("00:11:00", "08/05/2005" )
-    };*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,25 +118,6 @@ public class DrawLineChartActivity extends AppCompatActivity {
 
         return laps;
     }
-
-    /*private class Laptime{
-        private String lapTime;
-        private String date;
-
-        public Laptime(String laptime, String date){
-            this.lapTime = laptime;
-            this.date = date;
-        }
-
-
-        public String getLapTime() {
-            return lapTime;
-        }
-
-        public String getDate() {
-            return date;
-        }
-    }*/
 
 }
 
