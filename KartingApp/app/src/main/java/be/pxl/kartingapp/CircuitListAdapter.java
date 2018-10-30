@@ -110,7 +110,7 @@ public class CircuitListAdapter extends RecyclerView.Adapter<CircuitListAdapter.
             else {
                 // Not visible: start as intent
                 Intent intent = new Intent(fragment.getActivity().getBaseContext(), SessionsActivity.class);
-                intent.putExtra("circuit", selectedItem);
+                intent.putStringArrayListExtra("circuit", selectedItem);
                 fragment.getActivity().startActivity(intent);
             }
         }

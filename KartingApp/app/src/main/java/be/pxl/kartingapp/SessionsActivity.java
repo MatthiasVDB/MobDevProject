@@ -25,7 +25,7 @@ public class SessionsActivity extends FragmentActivity {
 
         //TODO Finish SessionActivity
 
-        CircuitListAdapter adapter;
+        SessionListAdapter adapter;
         RecyclerView sessionRecyclerView;
 
         Intent intent = getIntent();
@@ -44,8 +44,8 @@ public class SessionsActivity extends FragmentActivity {
         sessionRecyclerView = findViewById(R.id.rv_sessions);
         sessionRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        //adapter = new SessionListAdapter(this, sessions, FRAGMENT);
-        //sessionRecyclerView.setAdapter(adapter);
+        adapter = new SessionListAdapter(this, sessions, (SessionListFragment) getFragmentManager().findFragmentById(R.id.sessions));
+        sessionRecyclerView.setAdapter(adapter);
 
         //((EditText) findViewById(R.id.editTextItem)).setText(item);
     }
