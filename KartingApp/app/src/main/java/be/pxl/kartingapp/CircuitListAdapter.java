@@ -84,10 +84,6 @@ public class CircuitListAdapter extends RecyclerView.Adapter<CircuitListAdapter.
 
         @Override
         public void onClick(View view) {
-            int clickedPosition = getAdapterPosition();
-            String text = "Item #" + clickedPosition + " clicked with content " + addressTextView.getText() + ", " + circuitTextView.getText() + "!";
-            Toast.makeText(context, text, Toast.LENGTH_LONG).show();
-
             ArrayList<String> selectedItem = new ArrayList<>();
             selectedItem.add(addressTextView.getText().toString());
             selectedItem.add(circuitTextView.getText().toString());

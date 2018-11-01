@@ -78,10 +78,6 @@ public class SessionListAdapter extends RecyclerView.Adapter<SessionListAdapter.
 
         @Override
         public void onClick(View view) {
-            int clickedPosition = getAdapterPosition();
-            String text = "Item #" + clickedPosition + " clicked with content " + dateTextView.getText() + "!";
-            Toast.makeText(context, text, Toast.LENGTH_LONG).show();
-
             String selectedItem;
             selectedItem = dateTextView.getText().toString();
 
