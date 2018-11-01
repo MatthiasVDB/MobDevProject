@@ -6,11 +6,57 @@
     android:layout_height="match_parent"
     tools:context=".SessionListFragment">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_sessions"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="100dp"
-        />
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                />
+
+         <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_sessions"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/b_create_new_session"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Create new session" />
+
+            <Button
+                android:id="@+id/b_show_line_chart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Show line chart"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
 
 </android.support.design.widget.CoordinatorLayout>

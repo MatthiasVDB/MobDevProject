@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import java.util.List;
@@ -18,12 +20,33 @@ import be.pxl.kartingapp.models.Session;
 
 public class SessionsActivity extends FragmentActivity {
 
+    private Button bCreateNewSession;
+    private Button bShowLineChart;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sessions);
 
         //TODO Finish SessionActivity
+
+        bCreateNewSession = (Button) findViewById(R.id.b_create_new_session);
+        bCreateNewSession.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SessionsActivity.this, AddNewSessionActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        bShowLineChart = (Button) findViewById(R.id.b_show_line_chart);
+        bShowLineChart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SessionsActivity.this, DrawLineChartActivity.class);
+                startActivity(intent);
+            }
+        });
 
         SessionListAdapter adapter;
         RecyclerView sessionRecyclerView;

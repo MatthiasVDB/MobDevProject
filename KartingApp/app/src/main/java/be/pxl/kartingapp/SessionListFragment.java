@@ -47,7 +47,7 @@ public class SessionListFragment extends Fragment {
 
             Cursor sessions = sessionCursors.getAllSessionDatesByCircuitId(circuitId);
 
-            sessionRecyclerView = getView().findViewById(R.id.rv_sessions);
+            sessionRecyclerView = view.findViewById(R.id.rv_sessions);
             sessionRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));
 
             adapter = new SessionListAdapter(getActivity().getBaseContext(), sessions, (SessionListFragment) getFragmentManager().findFragmentById(R.id.sessions));

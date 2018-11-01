@@ -24,14 +24,14 @@
             android:name=".DrawLineChartActivity"
             android:label="@string/app_name">
         </activity>
-        <!--<activity
+        <activity
             android:name=".CircuitListFragment"
             android:label="CircuitListFragment">
         </activity>
         <activity
             android:name=".SessionListFragment"
             android:label="SessionListFragment">
-        </activity>-->
+        </activity>
         <activity
             android:name=".SessionsActivity"
             android:label="SessionsActivity">

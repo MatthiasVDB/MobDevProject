@@ -7,28 +7,9 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/b_create_new_session"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Create new session" />
-
-    <Button
-        android:id="@+id/b_show_line_chart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Show line chart"/>
-
     <fragment android:name="be.pxl.kartingapp.CircuitListFragment"
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-
-    <!--
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_circuits"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-        -->
 
 </LinearLayout>
