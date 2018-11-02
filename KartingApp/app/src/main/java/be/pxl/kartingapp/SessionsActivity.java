@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -22,20 +24,23 @@ public class SessionsActivity extends FragmentActivity {
 
     private Button bCreateNewSession;
     private Button bShowLineChart;
+    long circuitId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sessions);
 
-        //TODO Finish SessionActivity
+        //TODO Pass TrackLayout with both button onClick calls (also in SessionListFragment)
 
         bCreateNewSession = (Button) findViewById(R.id.b_create_new_session);
         bCreateNewSession.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SessionsActivity.this, AddNewSessionActivity.class);
-                startActivity(intent);
+                if (checkIfRadioButtonIsChecked((RadioGroup) findViewById(R.id.trackLayout))) {
+                    Intent intent = new Intent(SessionsActivity.this, AddNewSessionActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -43,13 +48,17 @@ public class SessionsActivity extends FragmentActivity {
         bShowLineChart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SessionsActivity.this, DrawLineChartActivity.class);
-                startActivity(intent);
+                if (checkIfRadioButtonIsChecked((RadioGroup) findViewById(R.id.trackLayout))) {
+                    Intent intent = new Intent(SessionsActivity.this, DrawLineChartActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
-        SessionListAdapter adapter;
-        RecyclerView sessionRecyclerView;
+        SessionListAdapter adapterFull;
+        SessionListAdapter adapterShort;
+        RecyclerView sessionFullRecyclerView;
+        RecyclerView sessionShortRecyclerView;
 
         Intent intent = getIntent();
         List<String> circuit = intent.getStringArrayListExtra("circuit");
@@ -60,16 +69,38 @@ public class SessionsActivity extends FragmentActivity {
         CircuitCursors circuitCursors = new CircuitCursors(db);
         SessionCursors sessionCursors = new SessionCursors(db);
 
-        long circuitId = circuitCursors.getCircuitIdByName(circuit.get(1));
+        circuitId = circuitCursors.getCircuitIdByName(circuit.get(1));
 
-        Cursor sessions = sessionCursors.getAllSessionsByCircuitId(circuitId);
+        Cursor sessionsFull = sessionCursors.getAllSessionsFullByCircuitId(circuitId);
+        Cursor sessionsShort = sessionCursors.getAllSessionsShortByCircuitId(circuitId);
 
-        sessionRecyclerView = findViewById(R.id.rv_sessions);
-        sessionRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        sessionFullRecyclerView = findViewById(R.id.rv_sessionsFull);
+        sessionFullRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new SessionListAdapter(this, sessions, (SessionListFragment) getFragmentManager().findFragmentById(R.id.sessions));
-        sessionRecyclerView.setAdapter(adapter);
+        adapterFull = new SessionListAdapter(this, sessionsFull, (SessionListFragment) getFragmentManager().findFragmentById(R.id.sessions));
+        sessionFullRecyclerView.setAdapter(adapterFull);
+
+        sessionShortRecyclerView = findViewById(R.id.rv_sessionsShort);
+        sessionShortRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        adapterShort = new SessionListAdapter(this, sessionsShort, (SessionListFragment) getFragmentManager().findFragmentById(R.id.sessions));
+        sessionShortRecyclerView.setAdapter(adapterShort);
 
         //((EditText) findViewById(R.id.editTextItem)).setText(item);
     }
+
+    private boolean checkIfRadioButtonIsChecked(RadioGroup group) {
+        if (circuitId == -1) {
+            CharSequence text = "Please select a circuit first.";
+            Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (group.getCheckedRadioButtonId() == -1) {
+            CharSequence text = "Please select a track layout first.";
+            Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 }

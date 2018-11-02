@@ -11,28 +11,66 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
+        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="0dip"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:id="@+id/trackLayout">
 
-            <TextView
-                android:layout_width="match_parent"
+            <RadioButton android:id="@+id/radio_full"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="4"
-                />
+                android:text="Full Track"/>
 
-         <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_sessions"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                />
+                android:orientation="horizontal">
 
-        </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    />
 
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_sessionsFull"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    />
 
+            </LinearLayout>
+
+            <RadioButton android:id="@+id/radio_short"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Short Track"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_sessionsShort"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    />
+
+            </LinearLayout>
+
+        </RadioGroup>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -45,7 +83,7 @@
                 android:id="@+id/b_create_new_session"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Create new session" />
+                android:text="Create new session"/>
 
             <Button
                 android:id="@+id/b_show_line_chart"
