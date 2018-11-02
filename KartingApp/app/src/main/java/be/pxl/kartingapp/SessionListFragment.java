@@ -4,16 +4,13 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -27,15 +24,21 @@ import be.pxl.kartingapp.data.SessionCursors;
 
 public class SessionListFragment extends Fragment {
 
-    private Button bCreateNewSession;
-    private Button bShowLineChart;
     private RadioGroup rgTrackLayout;
-    private RadioButton rbCheckedLayout;
     private long circuitId = -1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_sessions_fragment, container, false);
+
+        Button bCreateNewSession;
+        Button bShowLineChart;
+        SessionListAdapter adapterFull;
+        SessionListAdapter adapterShort;
+        RecyclerView sessionFullRecyclerView;
+        RecyclerView sessionShortRecyclerView;
+        List<String> circuit;
+        Bundle bundle = getArguments();
 
         rgTrackLayout = (RadioGroup) view.findViewById(R.id.trackLayout);
 
@@ -64,16 +67,7 @@ public class SessionListFragment extends Fragment {
             }
         });
 
-        SessionListAdapter adapterFull;
-        SessionListAdapter adapterShort;
-        RecyclerView sessionFullRecyclerView;
-        RecyclerView sessionShortRecyclerView;
-
-        Bundle bundle = getArguments();
-
-        List<String> circuit;
-
-        if(bundle != null){
+        if(bundle != null) {
             circuit = getArguments().getStringArrayList("circuit");
 
             KartingDbHelper dbHelper = new KartingDbHelper(getActivity().getBaseContext());

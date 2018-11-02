@@ -13,7 +13,5 @@
         android:layout_height="match_parent"
 
         />
-    <!--Insert line above:-->
-    <!--android:entries="@array/array_technology"-->
 
 </android.support.design.widget.CoordinatorLayout>

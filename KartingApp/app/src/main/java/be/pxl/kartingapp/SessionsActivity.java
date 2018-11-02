@@ -9,7 +9,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -20,18 +19,22 @@ import java.util.List;
 import be.pxl.kartingapp.data.CircuitCursors;
 import be.pxl.kartingapp.data.KartingDbHelper;
 import be.pxl.kartingapp.data.SessionCursors;
-import be.pxl.kartingapp.models.Session;
 
 public class SessionsActivity extends FragmentActivity {
 
-    private Button bCreateNewSession;
-    private Button bShowLineChart;
     private long circuitId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sessions);
+
+        Button bCreateNewSession;
+        Button bShowLineChart;
+        SessionListAdapter adapterFull;
+        SessionListAdapter adapterShort;
+        RecyclerView sessionFullRecyclerView;
+        RecyclerView sessionShortRecyclerView;
 
         bCreateNewSession = (Button) findViewById(R.id.b_create_new_session);
         bCreateNewSession.setOnClickListener(new View.OnClickListener() {
@@ -57,11 +60,6 @@ public class SessionsActivity extends FragmentActivity {
                 }
             }
         });
-
-        SessionListAdapter adapterFull;
-        SessionListAdapter adapterShort;
-        RecyclerView sessionFullRecyclerView;
-        RecyclerView sessionShortRecyclerView;
 
         Intent intent = getIntent();
         List<String> circuit = intent.getStringArrayListExtra("circuit");
@@ -89,7 +87,6 @@ public class SessionsActivity extends FragmentActivity {
         adapterShort = new SessionListAdapter(this, sessionsShort, (SessionListFragment) getFragmentManager().findFragmentById(R.id.sessions));
         sessionShortRecyclerView.setAdapter(adapterShort);
 
-        //((EditText) findViewById(R.id.editTextItem)).setText(item);
     }
 
     private boolean checkIfRadioButtonIsChecked(RadioGroup group) {

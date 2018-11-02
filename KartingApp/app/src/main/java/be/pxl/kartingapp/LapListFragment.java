@@ -10,12 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.List;
-
-import be.pxl.kartingapp.data.CircuitCursors;
 import be.pxl.kartingapp.data.KartingDbHelper;
 import be.pxl.kartingapp.data.LapCursors;
-import be.pxl.kartingapp.data.SessionCursors;
 
 public class LapListFragment extends Fragment {
 
@@ -23,13 +19,10 @@ public class LapListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_laps_fragment, container, false);
 
-
         LapListAdapter adapter;
         RecyclerView lapRecyclerView;
-
-        Bundle bundle = getArguments();
-
         Long sessionId;
+        Bundle bundle = getArguments();
 
         if(bundle != null){
             sessionId = getArguments().getLong("session");
@@ -44,7 +37,7 @@ public class LapListFragment extends Fragment {
             lapRecyclerView = view.findViewById(R.id.rv_laps);
             lapRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));
 
-            adapter = new LapListAdapter(getActivity().getBaseContext(), laps, (LapListFragment) getFragmentManager().findFragmentById(R.id.laps));
+            adapter = new LapListAdapter(getActivity().getBaseContext(), laps);
             lapRecyclerView.setAdapter(adapter);
         }
         return view;

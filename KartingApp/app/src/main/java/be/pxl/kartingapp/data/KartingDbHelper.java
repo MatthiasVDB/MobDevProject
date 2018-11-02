@@ -6,11 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-import be.pxl.kartingapp.models.Lap;
 import be.pxl.kartingapp.models.Session;
 
 //TODO Move queries to Cursor classes
@@ -150,29 +147,6 @@ public class KartingDbHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         return allCircuitSessions;
-    }
-
-    public ArrayList<Session> getAllCircuitSessionsByCircuitId(long id){
-        ArrayList<Session> allSessions = new ArrayList<>();
-        Session session;
-        String Query = "Select * from circuitSession where circuit_id = " + id;
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(Query, null);
-        if(cursor != null){
-            if (cursor.moveToFirst()) {
-                while (!cursor.isAfterLast()) {
-                    int sessionId = cursor.getInt(cursor.getColumnIndex("_id"));
-                    String date = cursor.getString(cursor.getColumnIndex("sessionDate"));
-                    String trackLayout = cursor.getString(cursor.getColumnIndex("trackLayout"));
-                    session = new Session(sessionId, date, trackLayout);
-                    allSessions.add(session);
-                    cursor.moveToNext();
-                }
-            }
-        }
-        cursor.close();
-        return allSessions;
-
     }
 
 }

@@ -8,12 +8,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import java.util.List;
-
-import be.pxl.kartingapp.data.CircuitCursors;
 import be.pxl.kartingapp.data.KartingDbHelper;
 import be.pxl.kartingapp.data.LapCursors;
-import be.pxl.kartingapp.data.SessionCursors;
 
 public class LapsActivity extends FragmentActivity {
 
@@ -38,7 +34,7 @@ public class LapsActivity extends FragmentActivity {
         lapRecyclerView = findViewById(R.id.rv_laps);
         lapRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new LapListAdapter(this, laps, (LapListFragment) getFragmentManager().findFragmentById(R.id.laps));
+        adapter = new LapListAdapter(this, laps);
         lapRecyclerView.setAdapter(adapter);
     }
 }

@@ -12,12 +12,10 @@ import android.widget.TextView;
 public class LapListAdapter extends RecyclerView.Adapter<LapListAdapter.LapListViewHolder> {
     private Context context;
     private Cursor cursor;
-    private LapListFragment fragment;
 
-    public LapListAdapter(Context context, Cursor cursor, LapListFragment fragment) {
+    public LapListAdapter(Context context, Cursor cursor) {
         this.context = context;
         this.cursor = cursor;
-        this.fragment = fragment;
     }
 
     @NonNull
