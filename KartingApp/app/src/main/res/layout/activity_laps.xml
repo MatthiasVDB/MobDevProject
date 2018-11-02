@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".SessionsActivity">
+    tools:context=".LapsActivity">
 
     <fragment android:name="be.pxl.kartingapp.LapListFragment"
         android:id="@+id/laps"
