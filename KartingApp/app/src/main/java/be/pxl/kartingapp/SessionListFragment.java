@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -29,13 +30,12 @@ public class SessionListFragment extends Fragment {
     private Button bCreateNewSession;
     private Button bShowLineChart;
     private RadioGroup rgTrackLayout;
-    long circuitId = -1;
+    private RadioButton rbCheckedLayout;
+    private long circuitId = -1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_sessions_fragment, container, false);
-
-        //TODO Pass Track Layout with both button onClick calls (also in SessionsActivity)
 
         rgTrackLayout = (RadioGroup) view.findViewById(R.id.trackLayout);
 
@@ -45,7 +45,9 @@ public class SessionListFragment extends Fragment {
             public void onClick(View view) {
                 if (checkIfRadioButtonIsChecked(rgTrackLayout)) {
                     Intent intent = new Intent(getActivity().getBaseContext(), AddNewSessionActivity.class);
-                    startActivity(intent);
+                    //bundle passes circuitId and trackLayout to next activity
+                    Bundle bundle = bundleArguments();
+                    startActivity(intent, bundle);
                 }
             }
         });
@@ -56,7 +58,8 @@ public class SessionListFragment extends Fragment {
             public void onClick(View view) {
                 if (checkIfRadioButtonIsChecked(rgTrackLayout)) {
                     Intent intent = new Intent(getActivity().getBaseContext(), DrawLineChartActivity.class);
-                    startActivity(intent);
+                    Bundle bundle = bundleArguments();
+                    startActivity(intent, bundle);
                 }
             }
         });
@@ -111,6 +114,24 @@ public class SessionListFragment extends Fragment {
         } else {
             return true;
         }
+    }
+
+    private String getCheckedTrackLayout() {
+        int id = rgTrackLayout.getCheckedRadioButtonId();
+        View radioButton = rgTrackLayout.findViewById(id);
+        int radioId = rgTrackLayout.indexOfChild(radioButton);
+        RadioButton btn = (RadioButton) rgTrackLayout.getChildAt(radioId);
+        String radioValue = (String) btn.getText();
+        return radioValue.split(" ")[0];
+    }
+
+    private Bundle bundleArguments() {
+        ArrayList<String> arguments = new ArrayList<>();
+        arguments.add("" + circuitId);
+        arguments.add(getCheckedTrackLayout());
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList("args", arguments);
+        return bundle;
     }
 
 

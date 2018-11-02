@@ -10,9 +10,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import be.pxl.kartingapp.data.CircuitCursors;
@@ -24,14 +26,12 @@ public class SessionsActivity extends FragmentActivity {
 
     private Button bCreateNewSession;
     private Button bShowLineChart;
-    long circuitId = -1;
+    private long circuitId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sessions);
-
-        //TODO Pass TrackLayout with both button onClick calls (also in SessionListFragment)
 
         bCreateNewSession = (Button) findViewById(R.id.b_create_new_session);
         bCreateNewSession.setOnClickListener(new View.OnClickListener() {
@@ -39,7 +39,9 @@ public class SessionsActivity extends FragmentActivity {
             public void onClick(View view) {
                 if (checkIfRadioButtonIsChecked((RadioGroup) findViewById(R.id.trackLayout))) {
                     Intent intent = new Intent(SessionsActivity.this, AddNewSessionActivity.class);
-                    startActivity(intent);
+                    //bundle passes circuitId and trackLayout to next activity
+                    Bundle bundle = bundleArguments();
+                    startActivity(intent, bundle);
                 }
             }
         });
@@ -50,7 +52,8 @@ public class SessionsActivity extends FragmentActivity {
             public void onClick(View view) {
                 if (checkIfRadioButtonIsChecked((RadioGroup) findViewById(R.id.trackLayout))) {
                     Intent intent = new Intent(SessionsActivity.this, DrawLineChartActivity.class);
-                    startActivity(intent);
+                    Bundle bundle = bundleArguments();
+                    startActivity(intent, bundle);
                 }
             }
         });
@@ -101,6 +104,21 @@ public class SessionsActivity extends FragmentActivity {
         } else {
             return true;
         }
+    }
+
+    private String getCheckedTrackLayout() {
+        RadioGroup rg = (RadioGroup) findViewById(R.id.trackLayout);
+        String radioValue = ((RadioButton) findViewById(rg.getCheckedRadioButtonId())).getText().toString();
+        return radioValue.split(" ")[0];
+    }
+
+    private Bundle bundleArguments() {
+        ArrayList<String> arguments = new ArrayList<>();
+        arguments.add("" + circuitId);
+        arguments.add(getCheckedTrackLayout());
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList("args", arguments);
+        return bundle;
     }
 
 }
