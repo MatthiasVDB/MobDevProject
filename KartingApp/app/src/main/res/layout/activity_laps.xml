@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".SessionsActivity">
+
+    <fragment android:name="be.pxl.kartingapp.LapListFragment"
+        android:id="@+id/laps"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</android.support.design.widget.CoordinatorLayout>

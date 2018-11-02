@@ -10,9 +10,9 @@ public class SessionCursors {
         this.db = db;
     }
 
-    public Cursor getAllSessionDatesByCircuitId(long circuitId) {
+    public Cursor getAllSessionsByCircuitId(long circuitId) {
 
-        String query = "SELECT " + KartingContract.SessionEntry.SESSION_DATE + " FROM " + KartingContract.SessionEntry.TABLE_NAME + " WHERE " +
+        String query = "SELECT * FROM " + KartingContract.SessionEntry.TABLE_NAME + " WHERE " +
                 KartingContract.SessionEntry.CIRCUIT_ID + " = " + circuitId;
 
         return db.rawQuery(query, null);

@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import be.pxl.kartingapp.models.Session;
+
 public class SessionListAdapter extends RecyclerView.Adapter<SessionListAdapter.SessionListViewHolder> {
     private Context context;
     private Cursor cursor;
@@ -78,27 +80,35 @@ public class SessionListAdapter extends RecyclerView.Adapter<SessionListAdapter.
 
         @Override
         public void onClick(View view) {
-            String selectedItem;
-            selectedItem = dateTextView.getText().toString();
+            int selectedPosition = getAdapterPosition();
 
-            SessionListFragment sessionListFragment = (SessionListFragment) fragment.getFragmentManager().findFragmentById(R.id.sessions);
-            if (sessionListFragment != null && sessionListFragment.isVisible()) {
+            ArrayList<Long> sessions = new ArrayList<>();
+            cursor.moveToFirst();
+            while(!cursor.isAfterLast()) {
+                sessions.add(cursor.getLong(cursor.getColumnIndex("_id")));
+                cursor.moveToNext();
+            }
+
+            long selectedSessionId = sessions.get(selectedPosition);
+
+            LapListFragment lapListFragment = (LapListFragment) fragment.getFragmentManager().findFragmentById(R.id.laps);
+            if (lapListFragment != null && lapListFragment.isVisible()) {
                 // Visible: send bundle
-                SessionListFragment newFragment = new SessionListFragment();
+                LapListFragment newFragment = new LapListFragment();
                 Bundle bundle = new Bundle();
-                bundle.putString("session", selectedItem);
+                bundle.putLong("session", selectedSessionId);
                 newFragment.setArguments(bundle);
 
                 FragmentTransaction transaction = fragment.getFragmentManager().beginTransaction();
-                transaction.replace(sessionListFragment.getId(), newFragment);
+                transaction.replace(lapListFragment.getId(), newFragment);
                 transaction.addToBackStack(null);
 
                 transaction.commit();
             }
             else {
                 // Not visible: start as intent
-                Intent intent = new Intent(fragment.getActivity().getBaseContext(), SessionsActivity.class);
-                intent.putExtra("session", selectedItem);
+                Intent intent = new Intent(fragment.getActivity().getBaseContext(), LapsActivity.class);
+                intent.putExtra("session", selectedSessionId);
                 fragment.getActivity().startActivity(intent);
             }
         }
