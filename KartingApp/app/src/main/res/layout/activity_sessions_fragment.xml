@@ -21,7 +21,7 @@
             <RadioButton android:id="@+id/radio_full"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Full Track"/>
+                android:text="@string/full_track"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -47,7 +47,7 @@
             <RadioButton android:id="@+id/radio_short"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Short Track"/>
+                android:text="@string/short_track"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -77,19 +77,22 @@
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:orientation="horizontal"
-            android:gravity="center">
+            android:gravity="center"
+            style="?android:attr/buttonBarStyle">
 
             <Button
                 android:id="@+id/b_create_new_session"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Create new session"/>
+                style="?android:attr/buttonBarButtonStyle"
+                android:text="@string/create_session"/>
 
             <Button
                 android:id="@+id/b_show_line_chart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Show line chart"/>
+                style="?android:attr/buttonBarButtonStyle"
+                android:text="@string/show_chart"/>
 
         </LinearLayout>
 

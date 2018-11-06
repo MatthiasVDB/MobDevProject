@@ -43,6 +43,8 @@ public class CircuitListAdapter extends RecyclerView.Adapter<CircuitListAdapter.
         String circuit = cursor.getString(cursor.getColumnIndex("name"));
         String address = cursor.getString(cursor.getColumnIndex("address"));
 
+        address = address.replace(", Belgium", "");
+
         holder.circuitTextView.setText(circuit);
         holder.addressTextView.setText(address);
     }

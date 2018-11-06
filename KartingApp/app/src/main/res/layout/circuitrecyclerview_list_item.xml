@@ -9,27 +9,25 @@
 
     <TextView
         android:id="@+id/tv_circuitName"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="1"
         android:ellipsize="end"
         android:fontFamily="sans-serif"
         android:singleLine="true"
-        android:text="Circuit"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="14sp" />
 
     <TextView
         android:id="@+id/tv_circuitAddress"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="1"
         android:ellipsize="end"
         android:fontFamily="sans-serif"
         android:singleLine="true"
-        android:text="Address"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="14sp" />
 

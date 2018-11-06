@@ -16,7 +16,6 @@
         android:ellipsize="end"
         android:fontFamily="sans-serif"
         android:singleLine="true"
-        android:text="Session Date"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="25sp" />
 
