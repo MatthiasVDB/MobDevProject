@@ -4,6 +4,9 @@
     <string name="draw_line_chart_activity">Fastest Laps</string>
     <string name="sessions_activity">Sessions</string>
     <string name="laps_activity">Laps</string>
+    <string name="circuits">Karting Circuits</string>
+    <string name="circuit">Circuit</string>
+    <string name="address">Address</string>
     <string name="full_track">Full Track</string>
     <string name="short_track">Short Track</string>
     <string name="create_session">Create new session</string>
@@ -11,6 +14,6 @@
     <string name="new_session">New session</string>
     <string name="date">Date: </string>
     <string name="number_of_laps">Number of laps</string>
-    <string name="lap_times">Lap times</string>
+    <string name="lap_times">Lap Times</string>
     <string name="add">Add</string>
 </resources>

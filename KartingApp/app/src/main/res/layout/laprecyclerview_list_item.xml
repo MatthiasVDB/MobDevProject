@@ -7,12 +7,24 @@
     android:layout_marginRight="5dp"
     android:orientation="horizontal">
 
+    <TextView
+        android:id="@+id/tv_lapNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif"
+        android:singleLine="true"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
+        android:textSize="25sp" />
 
     <TextView
         android:id="@+id/tv_lapTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginStart="15sp"
         android:ellipsize="end"
         android:fontFamily="sans-serif"
         android:singleLine="true"

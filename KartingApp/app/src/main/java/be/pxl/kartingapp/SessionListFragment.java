@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import be.pxl.kartingapp.data.SessionCursors;
 public class SessionListFragment extends Fragment {
 
     private RadioGroup rgTrackLayout;
+    private TextView tvCicuitName;
     private long circuitId = -1;
     private SessionListAdapter adapterFull;
     private SessionListAdapter adapterShort;
@@ -44,6 +46,7 @@ public class SessionListFragment extends Fragment {
         Bundle bundle = getArguments();
 
         rgTrackLayout = (RadioGroup) view.findViewById(R.id.trackLayout);
+        tvCicuitName = (TextView) view.findViewById(R.id.tv_circuit);
 
         bCreateNewSession = (Button) view.findViewById(R.id.b_create_new_session);
         bCreateNewSession.setOnClickListener(new View.OnClickListener() {
@@ -87,7 +90,9 @@ public class SessionListFragment extends Fragment {
             CircuitCursors circuitCursors = new CircuitCursors(db);
             SessionCursors sessionCursors = new SessionCursors(db);
 
-            circuitId = circuitCursors.getCircuitIdByName(circuit.get(1));
+            String circuitName = circuit.get(1);
+            tvCicuitName.setText(circuitName);
+            circuitId = circuitCursors.getCircuitIdByName(circuitName);
 
             Cursor sessionsFull = sessionCursors.getAllSessionsFullByCircuitId(circuitId);
             Cursor sessionsShort = sessionCursors.getAllSessionsShortByCircuitId(circuitId);

@@ -32,8 +32,10 @@ public class LapListAdapter extends RecyclerView.Adapter<LapListAdapter.LapListV
             return;
         }
 
+        String positionText = "" + (position+1);
         String lapTime = cursor.getString(cursor.getColumnIndex("lapTime"));
 
+        holder.lapNumberTextView.setText(positionText);
         holder.lapTimeTextView.setText(lapTime);
     }
 
@@ -59,10 +61,12 @@ public class LapListAdapter extends RecyclerView.Adapter<LapListAdapter.LapListV
 
 
     class LapListViewHolder extends RecyclerView.ViewHolder {
+        TextView lapNumberTextView;
         TextView lapTimeTextView;
 
         private LapListViewHolder(View itemView) {
             super(itemView);
+            lapNumberTextView = itemView.findViewById(R.id.tv_lapNumber);
             lapTimeTextView = itemView.findViewById(R.id.tv_lapTime);
         }
     }

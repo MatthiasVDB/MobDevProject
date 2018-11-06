@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import be.pxl.kartingapp.data.SessionCursors;
 
 public class SessionsActivity extends FragmentActivity {
 
+    private TextView tvCircuitName;
     private long circuitId = -1;
     private SessionListAdapter adapterFull;
     private SessionListAdapter adapterShort;
@@ -32,6 +34,8 @@ public class SessionsActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sessions);
+
+        tvCircuitName = findViewById(R.id.tv_circuit);
 
         Button bCreateNewSession;
         Button bShowLineChart;
@@ -46,7 +50,9 @@ public class SessionsActivity extends FragmentActivity {
         CircuitCursors circuitCursors = new CircuitCursors(db);
         SessionCursors sessionCursors = new SessionCursors(db);
 
-        circuitId = circuitCursors.getCircuitIdByName(circuit.get(1));
+        String circuitName = circuit.get(1);
+        tvCircuitName.setText(circuitName);
+        circuitId = circuitCursors.getCircuitIdByName(circuitName);
 
         Cursor sessionsFull = sessionCursors.getAllSessionsFullByCircuitId(circuitId);
         Cursor sessionsShort = sessionCursors.getAllSessionsShortByCircuitId(circuitId);

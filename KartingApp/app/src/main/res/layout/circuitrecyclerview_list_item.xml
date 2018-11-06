@@ -15,7 +15,7 @@
         android:layout_weight="1"
         android:ellipsize="end"
         android:fontFamily="sans-serif"
-        android:singleLine="true"
+        android:singleLine="false"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="14sp" />
 
@@ -27,7 +27,7 @@
         android:layout_weight="1"
         android:ellipsize="end"
         android:fontFamily="sans-serif"
-        android:singleLine="true"
+        android:singleLine="false"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="14sp" />
 
