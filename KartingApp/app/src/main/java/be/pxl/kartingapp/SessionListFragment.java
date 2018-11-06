@@ -26,6 +26,10 @@ public class SessionListFragment extends Fragment {
 
     private RadioGroup rgTrackLayout;
     private long circuitId = -1;
+    private SessionListAdapter adapterFull;
+    private SessionListAdapter adapterShort;
+    private RecyclerView sessionFullRecyclerView;
+    private RecyclerView sessionShortRecyclerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -33,10 +37,10 @@ public class SessionListFragment extends Fragment {
 
         Button bCreateNewSession;
         Button bShowLineChart;
-        SessionListAdapter adapterFull;
-        SessionListAdapter adapterShort;
-        RecyclerView sessionFullRecyclerView;
-        RecyclerView sessionShortRecyclerView;
+        //SessionListAdapter adapterFull;
+        //SessionListAdapter adapterShort;
+        //RecyclerView sessionFullRecyclerView;
+        //RecyclerView sessionShortRecyclerView;
         List<String> circuit;
         Bundle bundle = getArguments();
 
@@ -126,6 +130,22 @@ public class SessionListFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putStringArrayList("args", arguments);
         return bundle;
+    }
+
+    @Override
+    public void onResume()
+    {  // After a pause OR at startup
+        super.onResume();
+
+        KartingDbHelper dbHelper = new KartingDbHelper(getActivity().getBaseContext());
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        SessionCursors sessionCursors = new SessionCursors(db);
+        //Refresh your stuff here
+        if(adapterFull != null && adapterShort != null){
+            adapterShort.swapCursor(sessionCursors.getAllSessionsShortByCircuitId(circuitId));
+            adapterFull.swapCursor(sessionCursors.getAllSessionsFullByCircuitId(circuitId));
+        }
+
     }
 
 

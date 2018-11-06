@@ -1,6 +1,8 @@
 package be.pxl.kartingapp;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -32,26 +36,37 @@ public class AddNewSessionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addnewsession);
+        ArrayList<String> arguments = getIntent().getExtras().getStringArrayList("args");
+
+        final int circuitId = Integer.parseInt(arguments.get(0)) ;
+        final String trackLayout = arguments.get(1);
 
         et_numberOfLaps = (EditText) findViewById(R.id.et_number_of_laps);
         layout = (LinearLayout) findViewById(R.id.layout_lap_times);
         tv_chosenDate = (EditText) findViewById(R.id.tv_chosen_date);
         b_addSession = (Button) findViewById(R.id.b_add_session);
+
         b_addSession.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 List<String> lapTimes = new ArrayList<>();
-
+                boolean allLaptimesAreCorrect = true;
                 for( int i = 0; i < layout.getChildCount(); i++ ){
                     if( layout.getChildAt(i) instanceof EditText && layout.getChildAt(i).getId() != R.id.tv_chosen_date ){
                         String laptime = ((EditText) layout.getChildAt(i)).getText().toString();
-                        lapTimes.add(laptime);
+                        if(isCorrectLaptime(laptime)){
+                            lapTimes.add(laptime);
+                        }else{
+                            allLaptimesAreCorrect = false;
+                        }
 
                     }
                 }
 
-                addSessionWithLaptimes("Full", tv_chosenDate.getText().toString(), 1, lapTimes);
-
+                if(allLaptimesAreCorrect){
+                    addSessionWithLaptimes(trackLayout, tv_chosenDate.getText().toString(), circuitId, lapTimes);
+                    finish();
+                }
 
             }
         });
@@ -88,6 +103,15 @@ public class AddNewSessionActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private boolean isCorrectLaptime(String laptime) {
+        if(laptime.matches("([0-9][0-9]):([0-9][0-9]):([0-9][0-9])")){
+            return true;
+        }
+        CharSequence text = "Please enter laptime as hh:mm:ss";
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+        return false;
     }
 
     private void addLines(int numberOfLines){

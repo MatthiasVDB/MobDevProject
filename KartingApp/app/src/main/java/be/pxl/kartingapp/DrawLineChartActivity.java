@@ -32,9 +32,12 @@ public class DrawLineChartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawlinechart);
+        ArrayList<String> arguments = getIntent().getExtras().getStringArrayList("args");
+        int circuitId = Integer.parseInt(arguments.get(0)) ;
+        String trackLayout = arguments.get(1);
 
         lineChart = findViewById(R.id.lc_linechart);
-        laptimes = getFastestLapsByTrackLayout("Full");
+        laptimes = getFastestLapsByTrackLayout(trackLayout, circuitId);
         List<Entry> lapTimes = new ArrayList<Entry>();
 
         for (int i = 0; i < laptimes.size(); i++){
@@ -95,9 +98,9 @@ public class DrawLineChartActivity extends AppCompatActivity {
 
     }
 
-    public ArrayList<Lap> getFastestLapsByTrackLayout(String trackLayout){
+    public ArrayList<Lap> getFastestLapsByTrackLayout(String trackLayout, int circuitId){
         KartingDbHelper dbHelper = new KartingDbHelper(this);
-        ArrayList<Session> sessions = dbHelper.getAllCircuitsessionsByTrackLayout(trackLayout);
+        ArrayList<Session> sessions = dbHelper.getAllCircuitsessionsByTrackLayoutAndCircuitId(trackLayout, circuitId);
         ArrayList<Lap> laps = new ArrayList<>();
 
         for (Session session: sessions) {

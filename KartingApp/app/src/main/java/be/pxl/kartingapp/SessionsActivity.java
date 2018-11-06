@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -23,6 +24,10 @@ import be.pxl.kartingapp.data.SessionCursors;
 public class SessionsActivity extends FragmentActivity {
 
     private long circuitId = -1;
+    private SessionListAdapter adapterFull;
+    private SessionListAdapter adapterShort;
+    private RecyclerView sessionFullRecyclerView;
+    private RecyclerView sessionShortRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +36,10 @@ public class SessionsActivity extends FragmentActivity {
 
         Button bCreateNewSession;
         Button bShowLineChart;
-        SessionListAdapter adapterFull;
-        SessionListAdapter adapterShort;
-        RecyclerView sessionFullRecyclerView;
-        RecyclerView sessionShortRecyclerView;
+        //SessionListAdapter adapterFull;
+        //SessionListAdapter adapterShort;
+        //RecyclerView sessionFullRecyclerView;
+        //RecyclerView sessionShortRecyclerView;
 
         bCreateNewSession = (Button) findViewById(R.id.b_create_new_session);
         bCreateNewSession.setOnClickListener(new View.OnClickListener() {
@@ -44,7 +49,8 @@ public class SessionsActivity extends FragmentActivity {
                     Intent intent = new Intent(SessionsActivity.this, AddNewSessionActivity.class);
                     //bundle passes circuitId and trackLayout to next activity
                     Bundle bundle = bundleArguments();
-                    startActivity(intent, bundle);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
                 }
             }
         });
@@ -56,7 +62,8 @@ public class SessionsActivity extends FragmentActivity {
                 if (checkIfRadioButtonIsChecked((RadioGroup) findViewById(R.id.trackLayout))) {
                     Intent intent = new Intent(SessionsActivity.this, DrawLineChartActivity.class);
                     Bundle bundle = bundleArguments();
-                    startActivity(intent, bundle);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
                 }
             }
         });
@@ -116,6 +123,22 @@ public class SessionsActivity extends FragmentActivity {
         Bundle bundle = new Bundle();
         bundle.putStringArrayList("args", arguments);
         return bundle;
+    }
+
+    @Override
+    public void onResume()
+    {  // After a pause OR at startup
+        super.onResume();
+        //Refresh your stuff here
+        KartingDbHelper dbHelper = new KartingDbHelper(this);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        SessionCursors sessionCursors = new SessionCursors(db);
+        //Refresh your stuff here
+        if(adapterFull != null && adapterShort != null){
+            adapterShort.swapCursor(sessionCursors.getAllSessionsShortByCircuitId(circuitId));
+            adapterFull.swapCursor(sessionCursors.getAllSessionsFullByCircuitId(circuitId));
+        }
+
     }
 
 }
