@@ -149,4 +149,26 @@ public class KartingDbHelper extends SQLiteOpenHelper {
         return allCircuitSessions;
     }
 
+
+    public ArrayList<Session> getAllCircuitsessionsByTrackLayoutAndCircuitId(String trackLayout, int circuitId){
+        ArrayList<Session> allCircuitSessions = new ArrayList<>();
+        Session session;
+        String Query = "Select * from  circuitSession where trackLayout = \"" + trackLayout + "\" and circuit_id = " + circuitId;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(Query, null);
+        if(cursor != null){
+            if (cursor.moveToFirst()){
+                while (!cursor.isAfterLast()){
+                    int id = cursor.getInt(cursor.getColumnIndex("_id"));
+                    String date = cursor.getString(cursor.getColumnIndex("sessionDate"));
+                    session = new Session(id, date);
+                    allCircuitSessions.add(session);
+                    cursor.moveToNext();
+                }
+            }
+        }
+        cursor.close();
+        return allCircuitSessions;
+    }
+
 }

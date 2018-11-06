@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">KartingApp</string>
-    <string name="add_session_activity">AddNewSessionActivity</string>
-    <string name="draw_line_chart_activity">DrawLineChartActivity</string>
-    <string name="sessions_activity">SessionsActivity</string>
-    <string name="laps_activity">LapsActivity</string>
+    <string name="app_name">Karting App</string>
+    <string name="add_session_activity">Add new session</string>
+    <string name="draw_line_chart_activity">Fastest Laps</string>
+    <string name="sessions_activity">Sessions</string>
+    <string name="laps_activity">Laps</string>
     <string name="full_track">Full Track</string>
     <string name="short_track">Short Track</string>
     <string name="create_session">Create new session</string>
