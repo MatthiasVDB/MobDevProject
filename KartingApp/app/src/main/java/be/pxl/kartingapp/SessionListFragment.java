@@ -28,8 +28,9 @@ public class SessionListFragment extends Fragment {
     private long circuitId = -1;
     private SessionListAdapter adapterFull;
     private SessionListAdapter adapterShort;
-    private RecyclerView sessionFullRecyclerView;
-    private RecyclerView sessionShortRecyclerView;
+    private int allSessionsFull;
+    private int allSessionsShort;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -37,10 +38,8 @@ public class SessionListFragment extends Fragment {
 
         Button bCreateNewSession;
         Button bShowLineChart;
-        //SessionListAdapter adapterFull;
-        //SessionListAdapter adapterShort;
-        //RecyclerView sessionFullRecyclerView;
-        //RecyclerView sessionShortRecyclerView;
+        RecyclerView sessionFullRecyclerView;
+        RecyclerView sessionShortRecyclerView;
         List<String> circuit;
         Bundle bundle = getArguments();
 
@@ -54,7 +53,8 @@ public class SessionListFragment extends Fragment {
                     Intent intent = new Intent(getActivity().getBaseContext(), AddNewSessionActivity.class);
                     //bundle passes circuitId and trackLayout to next activity
                     Bundle bundle = bundleArguments();
-                    startActivity(intent, bundle);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
                 }
             }
         });
@@ -64,9 +64,16 @@ public class SessionListFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (checkIfRadioButtonIsChecked(rgTrackLayout)) {
-                    Intent intent = new Intent(getActivity().getBaseContext(), DrawLineChartActivity.class);
-                    Bundle bundle = bundleArguments();
-                    startActivity(intent, bundle);
+                    if (getCheckedTrackLayout().equals("Full") && allSessionsFull < 2) {
+                        ShowEmptySessionsToast();
+                    } else if (getCheckedTrackLayout().equals("Short") && allSessionsShort < 2) {
+                        ShowEmptySessionsToast();
+                    } else {
+                        Intent intent = new Intent(getActivity().getBaseContext(), DrawLineChartActivity.class);
+                        Bundle bundle = bundleArguments();
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }
                 }
             }
         });
@@ -132,18 +139,30 @@ public class SessionListFragment extends Fragment {
         return bundle;
     }
 
+    private void ShowEmptySessionsToast(){
+        CharSequence text = "There aren't enough sessions";
+        Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     public void onResume()
-    {  // After a pause OR at startup
+    {
         super.onResume();
 
         KartingDbHelper dbHelper = new KartingDbHelper(getActivity().getBaseContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         SessionCursors sessionCursors = new SessionCursors(db);
-        //Refresh your stuff here
+
+        Cursor shortCircuit = sessionCursors.getAllSessionsShortByCircuitId(circuitId);
+        Cursor fullCircuit = sessionCursors.getAllSessionsFullByCircuitId(circuitId);
         if(adapterFull != null && adapterShort != null){
-            adapterShort.swapCursor(sessionCursors.getAllSessionsShortByCircuitId(circuitId));
-            adapterFull.swapCursor(sessionCursors.getAllSessionsFullByCircuitId(circuitId));
+            adapterShort.swapCursor(shortCircuit);
+            adapterFull.swapCursor(fullCircuit);
+
+            allSessionsShort =shortCircuit.getCount();
+            allSessionsFull = fullCircuit.getCount();
+
+
         }
 
     }

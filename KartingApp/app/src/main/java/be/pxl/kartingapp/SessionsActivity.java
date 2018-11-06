@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -26,8 +25,6 @@ public class SessionsActivity extends FragmentActivity {
     private long circuitId = -1;
     private SessionListAdapter adapterFull;
     private SessionListAdapter adapterShort;
-    private RecyclerView sessionFullRecyclerView;
-    private RecyclerView sessionShortRecyclerView;
     private int allSessionsFull;
     private int allSessionsShort;
 
@@ -38,10 +35,8 @@ public class SessionsActivity extends FragmentActivity {
 
         Button bCreateNewSession;
         Button bShowLineChart;
-        //SessionListAdapter adapterFull;
-        //SessionListAdapter adapterShort;
-        //RecyclerView sessionFullRecyclerView;
-        //RecyclerView sessionShortRecyclerView;
+        RecyclerView sessionFullRecyclerView;
+        RecyclerView sessionShortRecyclerView;
         Intent intent = getIntent();
         List<String> circuit = intent.getStringArrayListExtra("circuit");
 
@@ -101,13 +96,9 @@ public class SessionsActivity extends FragmentActivity {
                         intent.putExtras(bundle);
                         startActivity(intent);
                     }
-
-
                 }
             }
         });
-
-
 
     }
 
@@ -147,25 +138,23 @@ public class SessionsActivity extends FragmentActivity {
 
     @Override
     public void onResume()
-    {  // After a pause OR at startup
+    {
         super.onResume();
-        //Refresh your stuff here
+
         KartingDbHelper dbHelper = new KartingDbHelper(this);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         SessionCursors sessionCursors = new SessionCursors(db);
-        //Refresh your stuff here
+
         Cursor shortCircuit = sessionCursors.getAllSessionsShortByCircuitId(circuitId);
         Cursor fullCircuit = sessionCursors.getAllSessionsFullByCircuitId(circuitId);
+
         if(adapterFull != null && adapterShort != null){
             adapterShort.swapCursor(shortCircuit);
             adapterFull.swapCursor(fullCircuit);
 
             allSessionsShort =shortCircuit.getCount();
             allSessionsFull = fullCircuit.getCount();
-
-
         }
-
     }
 
 }
