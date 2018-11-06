@@ -28,6 +28,8 @@ public class SessionsActivity extends FragmentActivity {
     private SessionListAdapter adapterShort;
     private RecyclerView sessionFullRecyclerView;
     private RecyclerView sessionShortRecyclerView;
+    private int allSessionsFull;
+    private int allSessionsShort;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,34 +42,6 @@ public class SessionsActivity extends FragmentActivity {
         //SessionListAdapter adapterShort;
         //RecyclerView sessionFullRecyclerView;
         //RecyclerView sessionShortRecyclerView;
-
-        bCreateNewSession = (Button) findViewById(R.id.b_create_new_session);
-        bCreateNewSession.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (checkIfRadioButtonIsChecked((RadioGroup) findViewById(R.id.trackLayout))) {
-                    Intent intent = new Intent(SessionsActivity.this, AddNewSessionActivity.class);
-                    //bundle passes circuitId and trackLayout to next activity
-                    Bundle bundle = bundleArguments();
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                }
-            }
-        });
-
-        bShowLineChart = (Button) findViewById(R.id.b_show_line_chart);
-        bShowLineChart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (checkIfRadioButtonIsChecked((RadioGroup) findViewById(R.id.trackLayout))) {
-                    Intent intent = new Intent(SessionsActivity.this, DrawLineChartActivity.class);
-                    Bundle bundle = bundleArguments();
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                }
-            }
-        });
-
         Intent intent = getIntent();
         List<String> circuit = intent.getStringArrayListExtra("circuit");
 
@@ -82,6 +56,9 @@ public class SessionsActivity extends FragmentActivity {
         Cursor sessionsFull = sessionCursors.getAllSessionsFullByCircuitId(circuitId);
         Cursor sessionsShort = sessionCursors.getAllSessionsShortByCircuitId(circuitId);
 
+        allSessionsFull = sessionsFull.getCount();
+        allSessionsShort = sessionsShort.getCount();
+
         sessionFullRecyclerView = findViewById(R.id.rv_sessionsFull);
         sessionFullRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -93,6 +70,44 @@ public class SessionsActivity extends FragmentActivity {
 
         adapterShort = new SessionListAdapter(this, sessionsShort, (SessionListFragment) getFragmentManager().findFragmentById(R.id.sessions));
         sessionShortRecyclerView.setAdapter(adapterShort);
+
+        bCreateNewSession = (Button) findViewById(R.id.b_create_new_session);
+        bCreateNewSession.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (checkIfRadioButtonIsChecked((RadioGroup) findViewById(R.id.trackLayout))) {
+                    Intent intent = new Intent(SessionsActivity.this, AddNewSessionActivity.class);
+                    //bundle passes circuitId and trackLayout to next activity
+                    Bundle bundle = bundleArguments();
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+
+                }
+            }
+        });
+
+        bShowLineChart = (Button) findViewById(R.id.b_show_line_chart);
+        bShowLineChart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (checkIfRadioButtonIsChecked((RadioGroup) findViewById(R.id.trackLayout))) {
+                    if(getCheckedTrackLayout().equals("Full") && allSessionsFull < 2){
+                        ShowEmptySessionsToast();
+                    } else if(getCheckedTrackLayout().equals("Short") && allSessionsShort < 2){
+                        ShowEmptySessionsToast();
+                    }else {
+                        Intent intent = new Intent(SessionsActivity.this, DrawLineChartActivity.class);
+                        Bundle bundle = bundleArguments();
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }
+
+
+                }
+            }
+        });
+
+
 
     }
 
@@ -116,6 +131,10 @@ public class SessionsActivity extends FragmentActivity {
         return radioValue.split(" ")[0];
     }
 
+    private void ShowEmptySessionsToast(){
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    }
+
     private Bundle bundleArguments() {
         ArrayList<String> arguments = new ArrayList<>();
         arguments.add("" + circuitId);
@@ -134,9 +153,16 @@ public class SessionsActivity extends FragmentActivity {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         SessionCursors sessionCursors = new SessionCursors(db);
         //Refresh your stuff here
+        Cursor shortCircuit = sessionCursors.getAllSessionsShortByCircuitId(circuitId);
+        Cursor fullCircuit = sessionCursors.getAllSessionsFullByCircuitId(circuitId);
         if(adapterFull != null && adapterShort != null){
-            adapterShort.swapCursor(sessionCursors.getAllSessionsShortByCircuitId(circuitId));
-            adapterFull.swapCursor(sessionCursors.getAllSessionsFullByCircuitId(circuitId));
+            adapterShort.swapCursor(shortCircuit);
+            adapterFull.swapCursor(fullCircuit);
+
+            allSessionsShort =shortCircuit.getCount();
+            allSessionsFull = fullCircuit.getCount();
+
+
         }
 
     }

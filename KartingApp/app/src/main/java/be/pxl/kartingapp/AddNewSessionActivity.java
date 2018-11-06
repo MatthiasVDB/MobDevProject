@@ -63,7 +63,7 @@ public class AddNewSessionActivity extends AppCompatActivity {
                     }
                 }
 
-                if(allLaptimesAreCorrect){
+                if(lapTimes.size() > 0 && allLaptimesAreCorrect){
                     addSessionWithLaptimes(trackLayout, tv_chosenDate.getText().toString(), circuitId, lapTimes);
                     finish();
                 }
@@ -87,9 +87,15 @@ public class AddNewSessionActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if(charSequence.length() != 0){
-                   //todo input check for numbers
-                    int numberOflines = Integer.parseInt(charSequence.toString());
-                    addLines(numberOflines);
+                        try{
+                            int numberOflines = Integer.parseInt(charSequence.toString());
+                            addLines(numberOflines);
+                        }catch (NumberFormatException ex){
+                            ex.printStackTrace();
+                        }
+
+
+
                 } else if(layout.getChildCount() != 0) {
                     layout.removeAllViews();
                 }
