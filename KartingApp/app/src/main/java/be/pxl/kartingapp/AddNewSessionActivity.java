@@ -112,7 +112,7 @@ public class AddNewSessionActivity extends AppCompatActivity {
     }
 
     private boolean isCorrectLaptime(String laptime) {
-        if(laptime.matches("([0-9][0-9]):([0-9][0-9]).([0-9][0-9][0-9])")){
+        if(laptime.matches("([0-9][0-9]):([0-9][0-9])\\.([0-9][0-9][0-9])")){
             return true;
         }
         CharSequence text = "Please enter laptime as mm:ss.ms";
