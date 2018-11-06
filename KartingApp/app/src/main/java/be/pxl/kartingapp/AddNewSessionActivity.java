@@ -112,10 +112,10 @@ public class AddNewSessionActivity extends AppCompatActivity {
     }
 
     private boolean isCorrectLaptime(String laptime) {
-        if(laptime.matches("([0-9][0-9]):([0-9][0-9]):([0-9][0-9])")){
+        if(laptime.matches("([0-9][0-9]):([0-9][0-9]).([0-9][0-9][0-9])")){
             return true;
         }
-        CharSequence text = "Please enter laptime as hh:mm:ss";
+        CharSequence text = "Please enter laptime as mm:ss.ms";
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
         return false;
     }
@@ -128,7 +128,7 @@ public class AddNewSessionActivity extends AppCompatActivity {
             LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             et.setId(i);
             et.setLayoutParams(p);
-            et.setHint("Enter lap time");
+            et.setHint("Enter lap time (mm:ss.ms)");
             layout.addView(et);
         }
 
