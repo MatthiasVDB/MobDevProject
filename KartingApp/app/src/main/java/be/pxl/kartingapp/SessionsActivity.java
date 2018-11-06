@@ -132,6 +132,7 @@ public class SessionsActivity extends FragmentActivity {
     }
 
     private void ShowEmptySessionsToast(){
+        CharSequence text = "There aren't enough sessions";
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
