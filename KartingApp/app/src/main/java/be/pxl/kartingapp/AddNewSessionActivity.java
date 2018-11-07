@@ -86,7 +86,7 @@ public class AddNewSessionActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(charSequence.length() != 0){
+                if(charSequence.length() != 0 && charSequence.length() < 3){
                         try{
                             int numberOflines = Integer.parseInt(charSequence.toString());
                             addLines(numberOflines);
